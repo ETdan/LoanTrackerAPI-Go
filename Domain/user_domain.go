@@ -41,6 +41,9 @@ type UserUsecase interface {
 	UpdateUser(id string, user User) (User, error)
 	DeleteUser(id string, id_to_delete string) error
 	Profile(user_id string) (User, error)
+
+	// CreateLoan(loan Loan) error
+	ApplyLoan(loan Loan) error
 }
 
 type UserRepository interface {

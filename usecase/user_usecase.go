@@ -219,3 +219,18 @@ func NewUserUseCase(userRepo domain.UserRepository) domain.UserUsecase {
 		UserRepo: userRepo,
 	}
 }
+
+// loan_usecase
+
+func (u UserUseCase) ApplyLoan(loan domain.Loan) error {
+	if loan.LoanAmount == 0 || loan.LoanType == "" || loan.LoanTerm == "" || loan.InterestRate == 0 {
+		return errors.New("Invalid loan details")
+	}
+
+	// return u.LoanRepo.ApplyLoan(loan)
+}
+
+func (u UserUseCase) GetLoan(id string) (domain.Loan, error) {
+	loan, err := u.LoanRepo.GetLoan(id)
+	return loan, err
+}
