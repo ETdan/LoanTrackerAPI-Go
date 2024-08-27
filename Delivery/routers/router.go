@@ -11,12 +11,16 @@ import (
 
 func RouterSetUp(router *gin.Engine, db *mongo.Database) {
 	usersRouter := router.Group("users")
-	userRepository := repository.NewUserRepository(*db.Collection("users"), *db.Collection("unverified_user"))
+	userRepository := repository.NewUserRepository(*db.Collection("user"), *db.Collection("unverified_user"))
 
 	userUseCase := usecase.NewUserUseCase(userRepository)
 	userController := controllers.NewUsersController(userUseCase)
 	NewUserRouter(usersRouter, userController)
 
-	router.Group("users")
+	adminRouter := router.Group("admin")
+	adminRepository := repository.NewUserRepository(*db.Collection("user"), *db.Collection("unverified_user"))
+	adminUseCase := usecase.NewUserUseCase(adminRepository)
+	adminController := controllers.NewUsersController(adminUseCase)
+	NewAdminRouter(adminRouter, adminController)
 
 }

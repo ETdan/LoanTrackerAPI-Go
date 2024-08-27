@@ -26,18 +26,31 @@ type UnverifiedUser struct {
 }
 
 type UserUsecase interface {
-	GetUsers() ([]User, error)
+	CreateUnVerifiedUser(unverified_user UnverifiedUser) error
+
+	Login(email string, password string) (string, string, error)
+
+	RefreshToken(refresh_token string) (string, error)
+
+	InitiatePasswordReset(email string) error
+	ResetPassword(sender_email string, token string, password string) error
+
+	VerifyEmail(token string) error
+	GetUsers(user_id string) ([]User, error)
 	GetUser(id string) (User, error)
-	CreateUser(user UnverifiedUser) error
 	UpdateUser(id string, user User) (User, error)
-	DeleteUser(id string) error
+	DeleteUser(id string, id_to_delete string) error
+	Profile(user_id string) (User, error)
 }
 
 type UserRepository interface {
-	GetUsers() ([]User, error)
+	CreateUser(user User) error
+	CreateUnVerifiedUser(unverified_user UnverifiedUser) error
+
+	GetUsers(user_id string) ([]User, error)
 	GetUser(id string) (User, error)
-	CreateUser(user UnverifiedUser) error
 	UpdateUser(id string, user User) (User, error)
 	DeleteUser(id string) error
 	GetUserByEmail(email string) (User, error)
+	GetUnverifiedUserByEmail(email string) (User, error)
 }

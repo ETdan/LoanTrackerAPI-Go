@@ -2,6 +2,7 @@ package routers
 
 import (
 	"LoanAPI/LoanTrackerAPI-Go/Delivery/controllers"
+	"LoanAPI/LoanTrackerAPI-Go/infrastructure"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +15,6 @@ func NewUserRouter(router *gin.RouterGroup, userController controllers.UserContr
 	router.POST("/token/refresh", userController.RefreshToken)
 	router.POST("/password-reset", userController.PasswordReset)
 
-	router.GET("/users/profile", userController.Profile)
+	router.GET("/profile", infrastructure.Auth_middleware(), userController.Profile)
 
 }
