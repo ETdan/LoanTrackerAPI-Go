@@ -17,4 +17,7 @@ func NewUserRouter(router *gin.RouterGroup, userController controllers.UserContr
 
 	router.GET("/profile", infrastructure.Auth_middleware(), userController.Profile)
 
+	router.POST("/loan", infrastructure.Auth_middleware(), userController.ApplyLoan)
+	router.GET("/loan/:id", infrastructure.Auth_middleware(), userController.GetLoans)
+
 }

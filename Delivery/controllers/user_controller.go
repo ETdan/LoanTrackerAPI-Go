@@ -230,3 +230,47 @@ func (u UserController) GetAllUsers(c *gin.Context) {
 		Data:    users,
 	})
 }
+
+// loan controller
+
+func (u UserController) ApplyLoan(c *gin.Context) {
+	var loan domain.Loan
+	if c.ShouldBind(&loan) != nil {
+		c.JSON(400, domain.ErrorResponse{
+			Message: "Invalid request body",
+			Status:  400,
+		})
+		return
+	}
+	err := u.UserUsecase.ApplyLoan(loan)
+	if err != nil {
+		c.JSON(500, domain.ErrorResponse{
+			Message: err.Error(),
+			Status:  500,
+		})
+		return
+	}
+
+	response := fmt.Sprintf("Loan application was successful")
+	c.JSON(201, domain.SuccessResponse{
+		Message: response,
+		Status:  201,
+	})
+}
+
+func (u UserController) GetLoans(c *gin.Context) {
+	user_id := c.GetString("user_id")
+	loans, err := u.UserUsecase.GetLoans(user_id)
+	if err != nil {
+		c.JSON(500, domain.ErrorResponse{
+			Message: err.Error(),
+			Status:  500,
+		})
+		return
+	}
+	c.JSON(200, domain.SuccessResponse{
+		Message: "Loans retrieved successfully",
+		Status:  200,
+		Data:    loans,
+	})
+}
